@@ -1,0 +1,39 @@
+.clearfix {
+  clear: both;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.text-result-wrapper {
+  width: 1200px;
+  height: 200px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.text, .result {
+  width: 600px;
+  height: 200px;
+  padding: 2px;
+  border: 1px solid;
+}
+
+.text {
+  resize: none;
+}
+
+.text:focus {
+  outline: none;
+}
+
+.result {
+  display: inline-block;
+  border-left: none;
+  /* font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace; */
+}
