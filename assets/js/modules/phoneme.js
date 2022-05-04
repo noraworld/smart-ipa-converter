@@ -1,15 +1,16 @@
 class Phoneme {
   constructor(dictionary) {
     this.dictionary = dictionary;
+    this.symbolsRegExp = new RegExp('[\,\.\!\?\"]', 'g');
   }
 
   convert(text) {
-    const symbols = '[,\.!\?]';
+    text = this.#formatInput(text);
 
     let sentencePhonemes = '';
 
     text.trim().split(/\s+/).forEach(word => {
-      let wordPhonemes = this.dictionary[word.toLowerCase().replace(new RegExp(symbols, 'g'), '')].replace(/\//g, '').trim()//.split(/,+/);
+      let wordPhonemes = this.#search(word);
 
       sentencePhonemes += wordPhonemes;
       // if (wordPhonemes.length >= 2) {
@@ -21,13 +22,45 @@ class Phoneme {
 
       // add comma and period
       if (word.search(/[,\.!\?]/g) >= 0) {
-        sentencePhonemes += word.match(new RegExp(symbols, 'g')).join('');
+        sentencePhonemes += word.match(this.symbolsRegExp).join('');
       }
     });
 
     sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ');
 
     return sentencePhonemes;
+  }
+
+  // ’ → '
+  // ” → "
+  #formatInput(text) {
+    const symbols = [
+      {
+        before: '’',
+        after: "'"
+      },
+      {
+        before: '”',
+        after: '"'
+      }
+    ]
+
+    symbols.forEach(symbol => {
+      text = text.replace(new RegExp(`${symbol['before']}`, 'g'), symbol['after']);
+    });
+
+    return text;
+  }
+
+  #search(word) {
+    let phonemes = this.dictionary[word.toLowerCase().replace(this.symbolsRegExp, '')];
+
+    if (phonemes) {
+      return phonemes.replace(/\//g, '').trim()//.split(/,+/);
+    }
+    else {
+      return ' ??? ';
+    }
   }
 }
 
