@@ -45,6 +45,7 @@ class Phoneme {
     text.trim().split(/\s+/).forEach(word => {
       let wordPhonemes = this.#search(word)
       wordPhonemes = this.#longVowelize(wordPhonemes)
+      wordPhonemes = this.#ashToBroadA(wordPhonemes)
 
       sentencePhonemes += wordPhonemes
       // if (wordPhonemes.length >= 2) {
@@ -117,6 +118,12 @@ class Phoneme {
     })
 
     return wordPhonemes
+  }
+
+  // /aʊ/ → /æʊ/
+  // https://www.kenkyusha.co.jp/purec/images/mihon%20hoka/327-76490-hatsuonkigo-namae.pdf
+  #ashToBroadA(wordPhonemes) {
+    return wordPhonemes.replace(/aʊ/g, 'æʊ')
   }
 
   #restoreSymbol(word) {
