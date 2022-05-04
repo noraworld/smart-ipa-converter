@@ -57,7 +57,7 @@ class Phoneme {
       sentencePhonemes += this.#restoreSymbol(word)
     })
 
-    sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ')
+    sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ').trim()
 
     sentencePhonemes = this.#simplify(sentencePhonemes)
     return sentencePhonemes
