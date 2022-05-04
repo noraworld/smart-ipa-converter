@@ -2,6 +2,39 @@ class Phoneme {
   constructor(dictionary) {
     this.dictionary = dictionary
     this.symbolsRegExp = new RegExp('[\,\.\!\?\"]', 'g')
+    this.vowels = ['ɑ', 'æ', 'ɔ', 'ə', 'ʌ', 'ɛ', 'e', 'ɪ', 'i', 'ʊ', 'u', 'ɜ']
+    this.diphthongs = ['aɪ', 'aʊ', 'æʊ', 'oʊ', 'ɔɪ', 'eɪ']
+    this.consonants = [
+      'p',
+      'b',
+      't',
+      'd',
+      'k',
+      'ɡ',
+      'g', // same as 'ɡ'
+      'f',
+      'v',
+      'θ',
+      'ð',
+      's',
+      'z',
+      'ʃ',
+      'ʒ',
+      'h',
+      'tʃ',
+      'ʤ',
+      'dʒ', // same as 'ʤ'
+      'm',
+      'n',
+      'ŋ',
+      'w',
+      'ɹ',
+      'r', // same as 'ɹ'
+      'j',
+      'ɫ',
+      'l', // same as 'ɫ'
+    ]
+    this.stressSymbol = ['ˈ']
   }
 
   convert(text) {
@@ -11,6 +44,7 @@ class Phoneme {
 
     text.trim().split(/\s+/).forEach(word => {
       let wordPhonemes = this.#search(word)
+      wordPhonemes = this.#longVowelize(wordPhonemes)
 
       sentencePhonemes += wordPhonemes
       // if (wordPhonemes.length >= 2) {
@@ -69,6 +103,20 @@ class Phoneme {
     })
 
     return text
+  }
+
+  // /fli/ → /fliː/
+  #longVowelize(wordPhonemes) {
+    const longPattern = ['ɑ', 'ɔ', 'i', 'u', 'ɜ', 'ɝ']
+
+    longPattern.forEach(phoneme => {
+      wordPhonemes = wordPhonemes.replace(
+        new RegExp(`(${this.stressSymbol}[${this.consonants.join('')}]*${phoneme})`, 'g'),
+        '$1ː'
+      )
+    })
+
+    return wordPhonemes
   }
 
   #restoreSymbol(word) {
