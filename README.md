@@ -1,4 +1,4 @@
-# Smart IPA Converter
+# Smart IPA Converter /ˈsmɑrd ˌaɪ ˌpi ˈeɪkən ˈvɜrːdər/
 TBA (short description)
 
 ## Features
