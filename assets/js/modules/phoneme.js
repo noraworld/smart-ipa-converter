@@ -1,34 +1,34 @@
 class Phoneme {
   constructor(dictionary) {
-    this.dictionary = dictionary;
-    this.symbolsRegExp = new RegExp('[\,\.\!\?\"]', 'g');
+    this.dictionary = dictionary
+    this.symbolsRegExp = new RegExp('[\,\.\!\?\"]', 'g')
   }
 
   convert(text) {
-    text = this.#formatInput(text);
+    text = this.#formatInput(text)
 
-    let sentencePhonemes = '';
+    let sentencePhonemes = ''
 
     text.trim().split(/\s+/).forEach(word => {
-      let wordPhonemes = this.#search(word);
+      let wordPhonemes = this.#search(word)
 
-      sentencePhonemes += wordPhonemes;
+      sentencePhonemes += wordPhonemes
       // if (wordPhonemes.length >= 2) {
-      //   sentencePhonemes += wordPhonemes[0];
+      //   sentencePhonemes += wordPhonemes[0]
       // }
       // else {
-      //   sentencePhonemes += wordPhonemes[0];
+      //   sentencePhonemes += wordPhonemes[0]
       // }
 
       // add comma and period
       if (word.search(/[,\.!\?]/g) >= 0) {
-        sentencePhonemes += word.match(this.symbolsRegExp).join('');
+        sentencePhonemes += word.match(this.symbolsRegExp).join('')
       }
-    });
+    })
 
-    sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ');
+    sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ')
 
-    return sentencePhonemes;
+    return sentencePhonemes
   }
 
   // ’ → '
@@ -46,22 +46,22 @@ class Phoneme {
     ]
 
     symbols.forEach(symbol => {
-      text = text.replace(new RegExp(`${symbol['before']}`, 'g'), symbol['after']);
-    });
+      text = text.replace(new RegExp(`${symbol['before']}`, 'g'), symbol['after'])
+    })
 
-    return text;
+    return text
   }
 
   #search(word) {
-    let phonemes = this.dictionary[word.toLowerCase().replace(this.symbolsRegExp, '')];
+    let phonemes = this.dictionary[word.toLowerCase().replace(this.symbolsRegExp, '')]
 
     if (phonemes) {
-      return phonemes.replace(/\//g, '').trim()//.split(/,+/);
+      return phonemes.replace(/\//g, '').trim()//.split(/,+/)
     }
     else {
-      return ' ??? ';
+      return ' ??? '
     }
   }
 }
 
-export default Phoneme;
+export default Phoneme
