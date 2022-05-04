@@ -20,10 +20,7 @@ class Phoneme {
       //   sentencePhonemes += wordPhonemes[0]
       // }
 
-      // add comma and period
-      if (word.search(/[,\.!\?]/g) >= 0) {
-        sentencePhonemes += word.match(this.symbolsRegExp).join('')
-      }
+      sentencePhonemes += this.#restoreSymbol(word)
     })
 
     sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ')
@@ -72,6 +69,15 @@ class Phoneme {
     })
 
     return text
+  }
+
+  #restoreSymbol(word) {
+    if (word.search(this.symbolsRegExp) >= 0) {
+      return word.match(this.symbolsRegExp).join('')
+    }
+    else {
+      return ''
+    }
   }
 
   #search(word) {
