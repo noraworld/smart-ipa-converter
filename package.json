@@ -1,0 +1,26 @@
+{
+  "name": "smart-ipa-converter",
+  "version": "0.1.0",
+  "description": "Smart IPA converter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noraworld/smart-ipa-converter.git"
+  },
+  "keywords": [
+    "ipa",
+    "phoneme",
+    "phonemes",
+    "english"
+  ],
+  "author": "Kosuke Aoki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noraworld/smart-ipa-converter/issues"
+  },
+  "homepage": "https://github.com/noraworld/smart-ipa-converter#readme",
+  "type": "module"
+}
