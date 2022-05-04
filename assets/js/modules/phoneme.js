@@ -88,6 +88,17 @@ class Phoneme {
   // /ɫ/ → /l/
   // /ɹ/ → /r/
   #simplify(text) {
+    const phoneticSymbolsWithLongVowelSymbol = [
+      {
+        complex: 'ɝː',
+        simplified: 'ɜːr'
+      },
+      {
+        complex: 'ɚː',
+        simplified: 'əːr'
+      }
+    ]
+
     const phoneticSymbols = [
       {
         complex: 'ɫ',
@@ -96,8 +107,28 @@ class Phoneme {
       {
         complex: 'ɹ',
         simplified: 'r'
+      },
+      {
+        complex: 'ɝ',
+        simplified: 'ɜr'
+      },
+      {
+        complex: 'ɚ',
+        simplified: 'ər'
+      },
+      {
+        complex: 'ɛ',
+        simplified: 'e'
+      },
+      {
+        complex: 'ʤ',
+        simplified: 'dʒ'
       }
     ]
+
+    phoneticSymbolsWithLongVowelSymbol.forEach(symbol => {
+      text = text.replace(new RegExp(symbol['complex'], 'g'), symbol['simplified'])
+    })
 
     phoneticSymbols.forEach(symbol => {
       text = text.replace(new RegExp(symbol['complex'], 'g'), symbol['simplified'])
@@ -108,7 +139,7 @@ class Phoneme {
 
   // /fli/ → /fliː/
   #longVowelize(wordPhonemes) {
-    const longPattern = ['ɑ', 'ɔ', 'i', 'u', 'ɜ', 'ɝ']
+    const longPattern = ['ɑ', 'ɔ', 'i', 'u', 'ɜ', 'ɝ', 'ɚ']
 
     longPattern.forEach(phoneme => {
       wordPhonemes = wordPhonemes.replace(
