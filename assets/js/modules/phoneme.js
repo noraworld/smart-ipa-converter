@@ -28,6 +28,7 @@ class Phoneme {
 
     sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ')
 
+    sentencePhonemes = this.#simplify(sentencePhonemes)
     return sentencePhonemes
   }
 
@@ -47,6 +48,27 @@ class Phoneme {
 
     symbols.forEach(symbol => {
       text = text.replace(new RegExp(`${symbol['before']}`, 'g'), symbol['after'])
+    })
+
+    return text
+  }
+
+  // /ɫ/ → /l/
+  // /ɹ/ → /r/
+  #simplify(text) {
+    const phoneticSymbols = [
+      {
+        complex: 'ɫ',
+        simplified: 'l'
+      },
+      {
+        complex: 'ɹ',
+        simplified: 'r'
+      }
+    ]
+
+    phoneticSymbols.forEach(symbol => {
+      text = text.replace(new RegExp(symbol['complex'], 'g'), symbol['simplified'])
     })
 
     return text
