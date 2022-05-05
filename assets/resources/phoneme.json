@@ -1,0 +1,102 @@
+{
+  "vowels": [
+    "ɑ",
+    "æ",
+    "ɔ",
+    "ə",
+    "ʌ",
+    "ɛ",
+    "e",
+    "ɪ",
+    "i",
+    "ʊ",
+    "u",
+    "ɜ"
+  ],
+  "long_vowels": [
+    "ɑ",
+    "ɔ",
+    "i",
+    "u",
+    "ɜ",
+    "ɝ",
+    "ɚ"
+  ],
+  "diphthongs": [
+    "aɪ",
+    "aʊ",
+    "æʊ",
+    "oʊ",
+    "ɔɪ",
+    "eɪ"
+  ],
+  "consonants": [
+    "p",
+    "b",
+    "t",
+    "d",
+    "k",
+    "ɡ",
+    "g",
+    "f",
+    "v",
+    "θ",
+    "ð",
+    "s",
+    "z",
+    "ʃ",
+    "ʒ",
+    "h",
+    "tʃ",
+    "ʤ",
+    "dʒ",
+    "m",
+    "n",
+    "ŋ",
+    "w",
+    "ɹ",
+    "r",
+    "j",
+    "ɫ",
+    "l"
+  ],
+  "stresses": [
+    "ˈ"
+  ],
+  "complex_and_simplified": [
+    {
+      "complex": "ɫ",
+      "simplified": "l"
+    },
+    {
+      "complex": "ɹ",
+      "simplified": "r"
+    },
+    {
+      "complex": "ɝ",
+      "simplified": "ɜr"
+    },
+    {
+      "complex": "ɚ",
+      "simplified": "ər"
+    },
+    {
+      "complex": "ɛ",
+      "simplified": "e"
+    },
+    {
+      "complex": "ʤ",
+      "simplified": "dʒ"
+    }
+  ],
+  "complex_and_simplified_with_long_vowels": [
+    {
+      "complex": "ɝː",
+      "simplified": "ɜːr"
+    },
+    {
+      "complex": "ɚː",
+      "simplified": "əːr"
+    }
+  ]
+}
