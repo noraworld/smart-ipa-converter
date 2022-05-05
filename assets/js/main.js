@@ -1,4 +1,3 @@
-import Dictionary from './modules/dictionary.js'
 import Phoneme from './modules/phoneme.js'
 
 function outputPlaceholder(input, output, phoneme) {
@@ -14,8 +13,7 @@ function outputPlaceholder(input, output, phoneme) {
 (() => {
   'use strict'
 
-  const dictionary = new Dictionary('assets/dictionary/en_US.json')
-  const phoneme = new Phoneme(dictionary.load())
+  const phoneme = new Phoneme()
 
   const input = document.querySelector('#input')
   const output = document.querySelector('#output')

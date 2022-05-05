@@ -1,40 +1,11 @@
+import Dictionary from './dictionary.js'
+
 class Phoneme {
-  constructor(dictionary) {
-    this.dictionary = dictionary
+  constructor() {
+    const dictionary = new Dictionary()
+    this.dictionary = dictionary.load('assets/resources/en_US.json')['en_US'][0]
+    this.phonemes = dictionary.load('assets/resources/phoneme.json')
     this.symbolsRegExp = new RegExp('[\,\.\!\?\"]', 'g')
-    this.vowels = ['ɑ', 'æ', 'ɔ', 'ə', 'ʌ', 'ɛ', 'e', 'ɪ', 'i', 'ʊ', 'u', 'ɜ']
-    this.diphthongs = ['aɪ', 'aʊ', 'æʊ', 'oʊ', 'ɔɪ', 'eɪ']
-    this.consonants = [
-      'p',
-      'b',
-      't',
-      'd',
-      'k',
-      'ɡ',
-      'g', // same as 'ɡ'
-      'f',
-      'v',
-      'θ',
-      'ð',
-      's',
-      'z',
-      'ʃ',
-      'ʒ',
-      'h',
-      'tʃ',
-      'ʤ',
-      'dʒ', // same as 'ʤ'
-      'm',
-      'n',
-      'ŋ',
-      'w',
-      'ɹ',
-      'r', // same as 'ɹ'
-      'j',
-      'ɫ',
-      'l', // same as 'ɫ'
-    ]
-    this.stressSymbol = ['ˈ']
   }
 
   convert(text) {
@@ -90,49 +61,11 @@ class Phoneme {
   // /ɫ/ → /l/
   // /ɹ/ → /r/
   #simplify(text) {
-    const phoneticSymbolsWithLongVowelSymbol = [
-      {
-        complex: 'ɝː',
-        simplified: 'ɜːr'
-      },
-      {
-        complex: 'ɚː',
-        simplified: 'əːr'
-      }
-    ]
-
-    const phoneticSymbols = [
-      {
-        complex: 'ɫ',
-        simplified: 'l'
-      },
-      {
-        complex: 'ɹ',
-        simplified: 'r'
-      },
-      {
-        complex: 'ɝ',
-        simplified: 'ɜr'
-      },
-      {
-        complex: 'ɚ',
-        simplified: 'ər'
-      },
-      {
-        complex: 'ɛ',
-        simplified: 'e'
-      },
-      {
-        complex: 'ʤ',
-        simplified: 'dʒ'
-      }
-    ]
-
-    phoneticSymbolsWithLongVowelSymbol.forEach(symbol => {
+    this.phonemes['complex_and_simplified_with_long_vowels'].forEach(symbol => {
       text = text.replace(new RegExp(symbol['complex'], 'g'), symbol['simplified'])
     })
 
-    phoneticSymbols.forEach(symbol => {
+    this.phonemes['complex_and_simplified'].forEach(symbol => {
       text = text.replace(new RegExp(symbol['complex'], 'g'), symbol['simplified'])
     })
 
@@ -141,11 +74,9 @@ class Phoneme {
 
   // /fli/ → /fliː/
   #longVowelize(wordPhonemes) {
-    const longPattern = ['ɑ', 'ɔ', 'i', 'u', 'ɜ', 'ɝ', 'ɚ']
-
-    longPattern.forEach(phoneme => {
+    this.phonemes['long_vowels'].forEach(phoneme => {
       wordPhonemes = wordPhonemes.replace(
-        new RegExp(`(${this.stressSymbol}[${this.consonants.join('')}]*${phoneme})`, 'g'),
+        new RegExp(`(${this.phonemes['stresses']}[${this.phonemes['consonants'].join('')}]*${phoneme})`, 'g'),
         '$1ː'
       )
     })

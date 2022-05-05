@@ -1,7 +1,7 @@
 import Dictionary from './dictionary.js'
 import Phoneme from './phoneme.js'
 
-const dictionary = new Dictionary('assets/dictionary/en_US.json')
+const dictionary = new Dictionary('assets/resources/en_US.json')
 const phoneme = new Phoneme(dictionary.load())
 
 xdescribe('formatInput', () => {
