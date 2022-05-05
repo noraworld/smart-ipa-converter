@@ -5,7 +5,7 @@ class Phoneme {
     const dictionary = new Dictionary()
     this.dictionary = dictionary.load('assets/resources/en_US.json')['en_US'][0]
     this.phonemes = dictionary.load('assets/resources/phoneme.json')
-    this.symbolsRegExp = new RegExp('[\,\.\!\?\"]', 'g')
+    this.delimiterSymbolRegExp = new RegExp('[\,\.\!\?\"]', 'g')
   }
 
   convert(text) {
@@ -110,8 +110,8 @@ class Phoneme {
   }
 
   #restoreSymbol(word) {
-    if (word.search(this.symbolsRegExp) >= 0) {
-      return word.match(this.symbolsRegExp).join('')
+    if (word.search(this.delimiterSymbolRegExp) >= 0) {
+      return word.match(this.delimiterSymbolRegExp).join('')
     }
     else {
       return ''
@@ -119,7 +119,7 @@ class Phoneme {
   }
 
   #search(word) {
-    let phonemes = this.dictionary[word.toLowerCase().replace(this.symbolsRegExp, '')]
+    let phonemes = this.dictionary[word.toLowerCase().replace(this.delimiterSymbolRegExp, '')]
 
     if (phonemes) {
       return phonemes.replace(/\//g, '').trim()//.split(/,+/)
