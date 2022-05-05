@@ -1,3 +1,13 @@
+body {
+  background-color: rgb(252 244 242);
+  background-color: rgb(255 250 248);
+}
+
+textarea {
+  background-color: rgb(252 244 242);
+  background-color: rgb(255 250 248);
+}
+
 .clearfix {
   clear: both;
 }
@@ -12,28 +22,42 @@
 
 .text-result-wrapper {
   width: 1200px;
-  height: 200px;
-  margin: 0 auto;
-  padding-top: 20px;
+  height: 300px;
+  margin: 20px auto;
+  box-sizing: content-box;
+  box-shadow: 2px 2px 8px 0 #c5c5c5;
+  border-radius: 4px;
 }
 
 .text, .result {
   width: 600px;
-  height: 200px;
-  padding: 2px;
-  border: 1px solid;
+  height: 300px;
+  padding: 15px 20px;
+  /* border: none; */
+  box-sizing: border-box;
+  border: 0.5px solid #f1f1f1;
 }
 
 .text {
   resize: none;
+  border-radius: 4px 0 0 4px;
 }
 
 .text:focus {
   outline: none;
 }
 
+.text::placeholder {
+  color: #c8c8c8;
+}
+
 .result {
   display: inline-block;
-  border-left: none;
-  font-family: Arial, Helvetica, sans-serif; /* Cambridge English Dictionary */
+  /* border-left: 1px solid #32599c; */
+  border-left: 0.5px solid #d9d9d9;
+  /* font-family: Arial, Helvetica, sans-serif; Cambridge English Dictionary */
+  font-family: monospace;
+  border-radius: 0 4px 4px 0;
+  overflow: auto;
+  cursor: text;
 }
