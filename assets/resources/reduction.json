@@ -1,0 +1,82 @@
+{
+  "all": {
+    "a": "ə",
+    "an": "ən",
+    "the": "ðə",
+    "to": "tə",
+    "for": "fɜr",
+    "from": "frəm",
+    "at": "ət",
+    "of": "əv",
+    "as": "ez",
+    "and": "ən",
+    "or": "ɜr",
+    "but": "bət",
+    "he": "i",
+    "his": "ɪz",
+    "him": "ɪm",
+    "her": "ɜr",
+    "am": "əm",
+    "are": "ɜr",
+    "was": "wəz",
+    "were": "wɜr",
+    "do": "də",
+    "does": "dəz",
+    "can": "kən",
+    "have": "həv",
+    "has": "həz",
+    "had": "həd",
+    "what": "wət",
+    "it": "ət",
+    "some": "səm",
+    "your": "jɜr",
+    "you're": "jɜr",
+    "that": "ðət"
+  },
+  "articles": {
+    "a": "ə",
+    "an": "ən",
+    "the": "ðə"
+  },
+  "prepositions": {
+    "to": "tə",
+    "for": "fɜr",
+    "from": "frəm",
+    "at": "ət",
+    "of": "əv",
+    "as": "ez"
+  },
+  "conjunctions": {
+    "and": "ən",
+    "or": "ɜr",
+    "but": "bət"
+  },
+  "pronouns": {
+    "he": "i",
+    "his": "ɪz",
+    "him": "ɪm",
+    "her": "ɜr"
+  },
+  "be_verbs": {
+    "am": "əm",
+    "are": "ɜr",
+    "was": "wəz",
+    "were": "wɜr"
+  },
+  "verbs": {
+    "do": "də",
+    "does": "dəz",
+    "can": "kən",
+    "have": "həv",
+    "has": "həz",
+    "had": "həd"
+  },
+  "others": {
+    "what": "wət",
+    "it": "ət",
+    "some": "səm",
+    "your": "jɜr",
+    "you're": "jɜr",
+    "that": "ðət"
+  }
+}
