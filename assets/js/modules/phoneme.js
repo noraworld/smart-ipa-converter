@@ -38,6 +38,8 @@ class Phoneme {
   }
 
   convert(text) {
+    if (!text) return ''
+
     text = this.#formatInput(text)
 
     let sentencePhonemes = ''
