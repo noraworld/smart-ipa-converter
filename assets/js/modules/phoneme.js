@@ -20,6 +20,7 @@ class Phoneme {
       wordPhonemes = this.#longVowelize(wordPhonemes)
       wordPhonemes = this.#ashToBroadA(wordPhonemes)
       wordPhonemes = this.#palatalize(wordPhonemes)
+      wordPhonemes = this.#schwaToInvertedV(wordPhonemes)
 
       sentencePhonemes += wordPhonemes
       // if (wordPhonemes.length >= 2) {
@@ -89,6 +90,13 @@ class Phoneme {
   // https://www.kenkyusha.co.jp/purec/images/mihon%20hoka/327-76490-hatsuonkigo-namae.pdf
   #ashToBroadA(wordPhonemes) {
     return wordPhonemes.replace(/aʊ/g, 'æʊ')
+  }
+
+  #schwaToInvertedV(wordPhonemes) {
+    return wordPhonemes.replace(
+      new RegExp(`(${this.phonemes['stresses']}[${this.phonemes['consonants'].join('')}]*)ə`, 'g'),
+      '$1ʌ'
+    )
   }
 
   // function name from: https://www.reddit.com/r/linguistics/comments/1vgtwg/tr_vs_t%CA%83r/
