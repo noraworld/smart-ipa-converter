@@ -5,6 +5,7 @@ class Phoneme {
     const dictionary = new Dictionary()
     this.dictionary = dictionary.load('assets/resources/en_US.json')['en_US'][0]
     this.phonemes = dictionary.load('assets/resources/phoneme.json')
+    this.reductions = dictionary.load('assets/resources/reduction.json')
     this.delimiterSymbolRegExp = new RegExp('[\,\.\!\?\"]', 'g')
   }
 
@@ -14,13 +15,16 @@ class Phoneme {
     text = this.#formatInput(text)
 
     let sentencePhonemes = ''
+    let beforeWord = null
 
     text.trim().split(/\s+/).forEach(word => {
       let wordPhonemes = this.#search(word)
+
       wordPhonemes = this.#longVowelize(wordPhonemes)
       wordPhonemes = this.#ashToBroadA(wordPhonemes)
       wordPhonemes = this.#palatalize(wordPhonemes)
       wordPhonemes = this.#schwaToInvertedV(wordPhonemes)
+      wordPhonemes = this.#reduction(beforeWord, word, wordPhonemes)
 
       sentencePhonemes += wordPhonemes
       // if (wordPhonemes.length >= 2) {
@@ -31,12 +35,41 @@ class Phoneme {
       // }
 
       sentencePhonemes += this.#restoreSymbol(word)
+
+      beforeWord = word
     })
 
     sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ').trim()
 
     sentencePhonemes = this.#simplify(sentencePhonemes)
     return sentencePhonemes
+  }
+
+  #reduction(beforeWord, word, wordPhonemes) {
+    // if condition:
+    //   not a first word of a sentence
+    //   there's no delimiters immediately before a word
+    //   a word is reduceable
+    //
+    //   ○ cream and sugar
+    //
+    //   the first word is not reduced
+    //   e.g.
+    //     × cream, and sugar
+    //     × cream. and sugar
+    //     × cream! and sugar
+    //     × cream? and sugar
+    //     × and
+    if (
+      beforeWord !== null &&
+      beforeWord.search(this.delimiterSymbolRegExp) < 0 &&
+      (Object.keys(this.reductions['all']).includes(word))
+    ) {
+      return this.reductions['all'][word]
+    }
+    else {
+      return wordPhonemes
+    }
   }
 
   // ’ → '
