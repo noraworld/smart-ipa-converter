@@ -19,6 +19,7 @@ class Phoneme {
       let wordPhonemes = this.#search(word)
       wordPhonemes = this.#longVowelize(wordPhonemes)
       wordPhonemes = this.#ashToBroadA(wordPhonemes)
+      wordPhonemes = this.#palatalize(wordPhonemes)
 
       sentencePhonemes += wordPhonemes
       // if (wordPhonemes.length >= 2) {
@@ -88,6 +89,16 @@ class Phoneme {
   // https://www.kenkyusha.co.jp/purec/images/mihon%20hoka/327-76490-hatsuonkigo-namae.pdf
   #ashToBroadA(wordPhonemes) {
     return wordPhonemes.replace(/aʊ/g, 'æʊ')
+  }
+
+  // function name from: https://www.reddit.com/r/linguistics/comments/1vgtwg/tr_vs_t%CA%83r/
+  #palatalize(wordPhonemes) {
+    wordPhonemes = wordPhonemes.replace(/tr/g, 'tʃr')
+    wordPhonemes = wordPhonemes.replace(/tɹ/g, 'tʃɹ')
+    wordPhonemes = wordPhonemes.replace(/dr/g, 'dʒr') // TODO: which one should I choose: dʒ, ʤ
+    wordPhonemes = wordPhonemes.replace(/dɹ/g, 'dʒɹ') // TODO: which one should I choose: dʒ, ʤ
+
+    return wordPhonemes
   }
 
   #restoreSymbol(word) {
