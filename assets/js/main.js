@@ -1,4 +1,5 @@
 import Phoneme from './modules/phoneme.js'
+import * as Parameter from './modules/parameter.js'
 
 function outputPlaceholder(input, output, phoneme) {
   if (!output.textContent) {
@@ -65,11 +66,18 @@ function buildOptionCheckboxElements(name, desc, checked) {
   const optionsElement = document.querySelector('#options')
 
   createOptionCheckboxes(options, optionsElement)
+
+  if (Parameter.get('text')) {
+    input.value = Parameter.get('text')
+    output.textContent = phoneme.convert(Parameter.get('text'))
+  }
+
   outputPlaceholder(input, output, phoneme)
 
   input.addEventListener('input', function() {
     output.textContent = phoneme.convert(this.value)
     outputPlaceholder(input, output, phoneme)
+    Parameter.set(`?text=${this.value}`)
   })
 
   document.querySelectorAll('#options div input').forEach(checkbox => {
