@@ -1,14 +1,17 @@
 import Dictionary from './dictionary.js'
 
 class Reduction {
-  constructor(prevWord, prevWordPhonemes, word, wordPhonemes, nextWord, nextWordPhonemes, text) {
+  constructor(prevWord, prevWordWithoutDelimiter, prevWordPhonemes, word, wordWithoutDelimiter, wordPhonemes, nextWord, nextWordPhonemes, text) {
     const dictionary = new Dictionary()
     this.reductions = dictionary.load('assets/resources/reduction.json')
+    this.phonemes = dictionary.load('assets/resources/phoneme.json')
     this.delimiterSymbolRegExp = new RegExp('[\,\.\!\?\"]', 'g')
 
     this.prevWord = prevWord
+    this.prevWordWithoutDelimiter = prevWordWithoutDelimiter
     this.prevWordPhonemes = prevWordPhonemes
     this.word = word
+    this.wordWithoutDelimiter = wordWithoutDelimiter
     this.wordPhonemes = wordPhonemes
     this.nextWord = nextWord
     this.nextWordPhonemes = nextWordPhonemes
@@ -18,15 +21,18 @@ class Reduction {
   convert() {
     // no reduction
     if (this.#isSingle()) {
-      return this.reductions['all'][this.word.replace(this.delimiterSymbolRegExp, '')][0]
+      return this.reductions['all'][this.wordWithoutDelimiter][0]
     }
     // standard reduction (no special rules)
-    else if (Object.keys(this.reductions['standard']).includes(this.word.replace(this.delimiterSymbolRegExp, ''))) {
-      return this.reductions['standard'][this.word.replace(this.delimiterSymbolRegExp, '')][1]
+    else if (Object.keys(this.reductions['standard']).includes(this.wordWithoutDelimiter)) {
+      return this.reductions['standard'][this.wordWithoutDelimiter][1]
     }
     // anomaly reduction (special rules)
     else if (this.#isAnomaly()) {
-      return this.reductions['anomaly'][this.word.replace(this.delimiterSymbolRegExp, '')][1]
+      return this.reductions['anomaly'][this.wordWithoutDelimiter][1]
+    }
+    else if (Object.keys(this.reductions['all']).includes(this.wordWithoutDelimiter)) {
+      return this.reductions['all'][this.wordWithoutDelimiter][0]
     }
     // no reduction
     else {
@@ -43,7 +49,57 @@ class Reduction {
     // console.log(`nextWordPhonemes: ${this.nextWordPhonemes}`)
     // console.log('')
 
-    return false // TODO
+    // "the"
+    //
+    // reduction if:
+    //   the first phoneme of a next word is a consonant
+    // no reduction if:
+    //   the first phoneme of a next word is a vowel
+    //
+    if (this.wordWithoutDelimiter === 'the') {
+      if (!this.nextWord) return false
+      if (this.word !== this.wordWithoutDelimiter) return false
+      if (this.nextWordPhonemes.search(
+        new RegExp(`^${this.phonemes['stresses']}?[${this.phonemes['vowels'].join('')}]`,
+        'g')
+      ) >= 0) {
+        return false
+      }
+
+      return true
+    }
+
+    // "for"
+    //
+    // reduction if:
+    //   it is not the end of the sentence
+    // no reduction if:
+    //   if is the end of the sentence
+    //
+    if (this.wordWithoutDelimiter === 'for') {
+      if (!this.nextWord) return false
+      if (this.word !== this.wordWithoutDelimiter) return false
+
+      return true
+    }
+
+    // "he", "his", "him", "her"
+    //
+    // reduction if:
+    //   the end phoneme of a prev word is a consonant
+    // no reduction if:
+    //   a prev word does not exist
+    //   the end phoneme of a prev word is a vowel
+    //
+    if (['he', 'his', 'him', 'her'].includes(this.wordWithoutDelimiter)) {
+      if (!this.prevWord) return false
+      if (this.prevWord !== this.prevWordWithoutDelimiter) return false
+      if (this.prevWordPhonemes.search(new RegExp(`[${this.phonemes['vowels'].join('')}]$`, 'g')) >= 0) return false
+
+      return true
+    }
+
+    return false
   }
 
   // return true if:
@@ -63,7 +119,7 @@ class Reduction {
     if (
       this.prevWord &&
       this.word.search(this.delimiterSymbolRegExp) >= 0 &&
-      Object.keys(this.reductions['all']).includes(this.word.replace(this.delimiterSymbolRegExp, ''))
+      Object.keys(this.reductions['all']).includes(this.wordWithoutDelimiter)
     ) {
       return true
     }
@@ -73,7 +129,7 @@ class Reduction {
       this.prevWord &&
       this.prevWord.search(this.delimiterSymbolRegExp) >= 0 &&
       this.word.search(this.delimiterSymbolRegExp) >= 0 &&
-      Object.keys(this.reductions['all']).includes(this.word.replace(this.delimiterSymbolRegExp, ''))
+      Object.keys(this.reductions['all']).includes(this.wordWithoutDelimiter)
     ) {
       return true
     }

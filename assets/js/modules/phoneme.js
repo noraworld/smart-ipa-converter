@@ -19,6 +19,7 @@ class Phoneme {
 
     let sentencePhonemes = ''
     let prevWord = null
+    let prevWordWithoutDelimiter = null
     let prevWordPhonemes = null
     let nextWord = null
     let nextWordPhonemes = null
@@ -31,6 +32,17 @@ class Phoneme {
         nextWord = words[index + 1]
         nextWordPhonemes = this.#search(nextWord)
       }
+      else {
+        nextWord = null
+        nextWordPhonemes = null
+      }
+
+      if (prevWord) {
+        prevWordWithoutDelimiter = prevWord.replace(this.delimiterSymbolRegExp, '')
+      }
+      else {
+        prevWordWithoutDelimiter = null
+      }
 
       wordPhonemes = this.#longVowelize(wordPhonemes)
       wordPhonemes = this.#ashToBroadA(wordPhonemes)
@@ -38,8 +50,10 @@ class Phoneme {
       wordPhonemes = this.#schwaToInvertedV(wordPhonemes)
 
       this.reduction.prevWord = prevWord
+      this.reduction.prevWordWithoutDelimiter = prevWordWithoutDelimiter
       this.reduction.prevWordPhonemes = prevWordPhonemes
       this.reduction.word = word
+      this.reduction.wordWithoutDelimiter = word.replace(this.delimiterSymbolRegExp, '')
       this.reduction.wordPhonemes = wordPhonemes
       this.reduction.nextWord = nextWord
       this.reduction.nextWordPhonemes = nextWordPhonemes
