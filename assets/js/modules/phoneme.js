@@ -2,7 +2,9 @@ import Dictionary from './dictionary.js'
 import Reduction from './reduction.js'
 
 class Phoneme {
-  constructor() {
+  constructor(options = {}) {
+    this.options = options
+
     const dictionary = new Dictionary()
 
     this.dictionary = dictionary.load('assets/resources/en_US.json')['en_US'][0]
@@ -44,10 +46,10 @@ class Phoneme {
         prevWordWithoutDelimiter = null
       }
 
-      wordPhonemes = this.#longVowelize(wordPhonemes)
-      wordPhonemes = this.#ashToBroadA(wordPhonemes)
-      wordPhonemes = this.#palatalize(wordPhonemes)
-      wordPhonemes = this.#schwaToInvertedV(wordPhonemes)
+      if (this.options['longVowelize']['value']) wordPhonemes = this.#longVowelize(wordPhonemes)
+      if (this.options['ashToBroadA']['value']) wordPhonemes = this.#ashToBroadA(wordPhonemes)
+      if (this.options['palatalize']['value']) wordPhonemes = this.#palatalize(wordPhonemes)
+      if (this.options['schwaToInvertedV']['value']) wordPhonemes = this.#schwaToInvertedV(wordPhonemes)
 
       this.reduction.prevWord = prevWord
       this.reduction.prevWordWithoutDelimiter = prevWordWithoutDelimiter
@@ -76,7 +78,7 @@ class Phoneme {
 
     sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ').trim()
 
-    sentencePhonemes = this.#simplify(sentencePhonemes)
+    if (this.options['simplify']['value']) sentencePhonemes = this.#simplify(sentencePhonemes)
     return sentencePhonemes
   }
 

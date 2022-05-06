@@ -6,6 +6,17 @@ textarea {
   background-color: rgb(255 250 248);
 }
 
+label {
+  cursor: pointer;
+  user-select: none;
+}
+
+code {
+  background-color: #e5e5e5;
+  border-radius: 4px;
+  padding: 1px 3px;
+}
+
 .clearfix {
   clear: both;
 }
@@ -33,6 +44,7 @@ textarea {
   padding: 15px 20px;
   box-sizing: border-box;
   border: 0.5px solid #f1f1f1;
+  font-family: monospace;
 }
 
 .text {
@@ -51,8 +63,12 @@ textarea {
 .result {
   display: inline-block;
   border-left: 0.5px solid #d9d9d9;
-  font-family: monospace;
   border-radius: 0 4px 4px 0;
   overflow: auto;
   cursor: text;
+}
+
+.options {
+  width: 1200px;
+  margin: 20px auto;
 }
