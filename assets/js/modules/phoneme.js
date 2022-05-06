@@ -1,11 +1,14 @@
 import Dictionary from './dictionary.js'
+import Reduction from './reduction.js'
 
 class Phoneme {
   constructor() {
     const dictionary = new Dictionary()
+
     this.dictionary = dictionary.load('assets/resources/en_US.json')['en_US'][0]
     this.phonemes = dictionary.load('assets/resources/phoneme.json')
-    this.reductions = dictionary.load('assets/resources/reduction.json')
+    this.reduction = new Reduction()
+
     this.delimiterSymbolRegExp = new RegExp('[\,\.\!\?\"]', 'g')
   }
 
@@ -24,7 +27,7 @@ class Phoneme {
       wordPhonemes = this.#ashToBroadA(wordPhonemes)
       wordPhonemes = this.#palatalize(wordPhonemes)
       wordPhonemes = this.#schwaToInvertedV(wordPhonemes)
-      wordPhonemes = this.#reduction(beforeWord, word, wordPhonemes)
+      wordPhonemes = this.reduction.convert(beforeWord, word, wordPhonemes, text)
 
       sentencePhonemes += wordPhonemes
       // if (wordPhonemes.length >= 2) {
@@ -43,33 +46,6 @@ class Phoneme {
 
     sentencePhonemes = this.#simplify(sentencePhonemes)
     return sentencePhonemes
-  }
-
-  #reduction(beforeWord, word, wordPhonemes) {
-    // if condition:
-    //   not a first word of a sentence
-    //   there's no delimiters immediately before a word
-    //   a word is reduceable
-    //
-    //   ○ cream and sugar
-    //
-    //   the first word is not reduced
-    //   e.g.
-    //     × cream, and sugar
-    //     × cream. and sugar
-    //     × cream! and sugar
-    //     × cream? and sugar
-    //     × and
-    if (
-      beforeWord !== null &&
-      beforeWord.search(this.delimiterSymbolRegExp) < 0 &&
-      (Object.keys(this.reductions['all']).includes(word))
-    ) {
-      return this.reductions['all'][word]
-    }
-    else {
-      return wordPhonemes
-    }
   }
 
   // ’ → '
