@@ -18,16 +18,33 @@ class Phoneme {
     text = this.#formatInput(text)
 
     let sentencePhonemes = ''
-    let beforeWord = null
+    let prevWord = null
+    let prevWordPhonemes = null
+    let nextWord = null
+    let nextWordPhonemes = null
+    let words = text.trim().split(/\s+/)
 
-    text.trim().split(/\s+/).forEach(word => {
+    words.forEach((word, index) => {
       let wordPhonemes = this.#search(word)
+
+      if (words[index + 1]) {
+        nextWord = words[index + 1]
+        nextWordPhonemes = this.#search(nextWord)
+      }
 
       wordPhonemes = this.#longVowelize(wordPhonemes)
       wordPhonemes = this.#ashToBroadA(wordPhonemes)
       wordPhonemes = this.#palatalize(wordPhonemes)
       wordPhonemes = this.#schwaToInvertedV(wordPhonemes)
-      wordPhonemes = this.reduction.convert(beforeWord, word, wordPhonemes, text)
+
+      this.reduction.prevWord = prevWord
+      this.reduction.prevWordPhonemes = prevWordPhonemes
+      this.reduction.word = word
+      this.reduction.wordPhonemes = wordPhonemes
+      this.reduction.nextWord = nextWord
+      this.reduction.nextWordPhonemes = nextWordPhonemes
+      this.reduction.text = text
+      wordPhonemes = this.reduction.convert()
 
       sentencePhonemes += wordPhonemes
       // if (wordPhonemes.length >= 2) {
@@ -39,7 +56,8 @@ class Phoneme {
 
       sentencePhonemes += this.#restoreSymbol(word)
 
-      beforeWord = word
+      prevWord = word
+      prevWordPhonemes = wordPhonemes
     })
 
     sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ').trim()
