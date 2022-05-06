@@ -31,6 +31,7 @@ class Reduction {
     else if (this.#isAnomaly()) {
       return this.reductions['anomaly'][this.wordWithoutDelimiter][1]
     }
+    // no reduction but don't load from dictionary
     else if (Object.keys(this.reductions['all']).includes(this.wordWithoutDelimiter)) {
       return this.reductions['all'][this.wordWithoutDelimiter][0]
     }
