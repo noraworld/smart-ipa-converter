@@ -55,16 +55,18 @@ function buildPhonemeElements(phonemes) {
   let result = ''
 
   phonemes.forEach(phoneme => {
-    phoneme = phoneme.map(value => value.replace(/([\,\.\!\?\"]+$)/g, '$1 '))
-    phoneme = phoneme.map(value => value.replace(/([ˈˌ])/g, ' $1'))
+    if (phoneme[0].search(/([ˈˌ])/g) >= 0) result += ' '
 
     if (phoneme.length >= 2) {
-      // console.log("Others: ${phoneme.slice(1).map(value => `"${value}"`).join(' or ')}")
-      result += `<span data-sub-phonemes="Others: ${phoneme.slice(1).map(value => `&ldquo;${value}&rdquo;`).join(' or ')}">${phoneme[0]}</span>`
+      // http://ithat.me/2015/09/15/css-before-after-content-line-break
+      // https://stackoverflow.com/questions/16451553/css-data-attribute-new-line-character-pseudo-element-content-value
+      result += `<span data-sub-phonemes="others&#xa;${phoneme.slice(1).map(value => `/${value}/`).join('&#xa;')}">${phoneme[0]}</span>`
     }
     else {
       result += phoneme[0]
     }
+
+    if (phoneme[0].search(/([\,\.\!\?]+$)/g) >= 0) result += ' '
   })
 
   return result

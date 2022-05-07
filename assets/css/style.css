@@ -75,41 +75,32 @@ input[type="checkbox"] {
   display: inline-block;
   border-left: 0.5px solid #d9d9d9;
   border-radius: 0 4px 4px 0;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   cursor: text;
 }
 
 /* https://bitto.jp/posts/%E6%8A%80%E8%A1%93/css/tooltip-with-css/ */
 .result span[data-sub-phonemes] {
   color: #2ba5ed;
-  /* cursor: pointer; */
   position: relative;
 }
 .result span[data-sub-phonemes]::before,
 .result span[data-sub-phonemes]::after {
+  display: none;
   position: absolute;
-  transition: all 0.3s ease 0s;
-  display: none;
-}
-.result span[data-sub-phonemes]::before {
-  content: "";
-  border: 10px solid transparent;
-  border-bottom-color: #ffcccc;
-  top: 16px;
-  left: 10px;
-  display: none;
 }
 .result span[data-sub-phonemes]::after {
+  display: none;
   content: attr(data-sub-phonemes);
-  display: block;
-  padding: 10px;
-  background: #ffcccc;
+  padding: 3px 10px;
+  background: #90cbed;
   color: #333333;
   border-radius: 5px;
-  top: 36px;
-  left: 0;
-  white-space: nowrap;
-  display: none;
+  top: 20px;
+  right: 0;
+  white-space: pre;
+  text-align: center;
 }
 .result span[data-sub-phonemes]:hover::before,
 .result span[data-sub-phonemes]:hover::after {
