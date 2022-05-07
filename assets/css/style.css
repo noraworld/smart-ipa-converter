@@ -1,5 +1,6 @@
 body {
   background-color: rgb(255 250 248);
+  font-family: monospace;
 }
 
 textarea {
@@ -44,7 +45,6 @@ code {
   padding: 15px 20px;
   box-sizing: border-box;
   border: 0.5px solid #f1f1f1;
-  font-family: monospace;
 }
 
 .text {
@@ -69,6 +69,6 @@ code {
 }
 
 .options {
-  width: 1200px;
-  margin: 20px auto;
+  width: 1150px;
+  margin: 30px auto;
 }
