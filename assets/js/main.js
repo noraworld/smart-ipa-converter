@@ -17,7 +17,7 @@ function updateOptionsFromCookie(options) {
 
 function outputPlaceholder(input, output, phoneme) {
   if (!output.textContent) {
-    output.textContent = phoneme.convert(input.placeholder)
+    printPhonemes(phoneme.convert(input.placeholder))
     output.style.color = '#cac9c9'
   }
   else {
@@ -41,6 +41,33 @@ function buildOptionCheckboxElements(name, desc, checked) {
       <label for="${name}">${desc}</label>
     </div>
   `
+}
+
+function printPhonemes(phonemes) {
+  document.querySelector('#output').textContent = ''
+  document.querySelector('#output').insertAdjacentHTML(
+    'afterbegin',
+    buildPhonemeElements(phonemes)
+  )
+}
+
+function buildPhonemeElements(phonemes) {
+  let result = ''
+
+  phonemes.forEach(phoneme => {
+    phoneme = phoneme.map(value => value.replace(/([\,\.\!\?\"]+$)/g, '$1 '))
+    phoneme = phoneme.map(value => value.replace(/([ˈˌ])/g, ' $1'))
+
+    if (phoneme.length >= 2) {
+      // console.log("Others: ${phoneme.slice(1).map(value => `"${value}"`).join(' or ')}")
+      result += `<span data-sub-phonemes="Others: ${phoneme.slice(1).map(value => `&ldquo;${value}&rdquo;`).join(' or ')}">${phoneme[0]}</span>`
+    }
+    else {
+      result += phoneme[0]
+    }
+  })
+
+  return result
 }
 
 (() => {
@@ -84,13 +111,13 @@ function buildOptionCheckboxElements(name, desc, checked) {
 
   if (Parameter.get('text')) {
     input.value = Parameter.get('text')
-    output.textContent = phoneme.convert(Parameter.get('text'))
+    printPhonemes(phoneme.convert(Parameter.get('text')))
   }
 
   outputPlaceholder(input, output, phoneme)
 
   input.addEventListener('input', function() {
-    output.textContent = phoneme.convert(this.value)
+    printPhonemes(phoneme.convert(this.value))
     outputPlaceholder(input, output, phoneme)
     Parameter.set(`?text=${this.value}`)
   })
@@ -99,7 +126,7 @@ function buildOptionCheckboxElements(name, desc, checked) {
   document.querySelectorAll('#options div input').forEach(checkbox => {
     checkbox.addEventListener('change', function() {
       options[this.id]['value'] = this.checked
-      output.textContent = phoneme.convert(input.value)
+      printPhonemes(phoneme.convert(input.value))
       outputPlaceholder(input, output, phoneme)
       document.cookie = `${this.id}=${this.checked}`
     })

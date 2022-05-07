@@ -15,17 +15,17 @@ class Phoneme {
   }
 
   convert(text) {
-    if (!text) return ''
+    if (!text) return []
 
     text = this.#formatInput(text)
 
-    let sentencePhonemes = ''
+    let sentencePhonemes = []
     let prevWord = null
     let prevWordWithoutDelimiter = null
     let prevWordPhonemes = null
     let nextWord = null
     let nextWordPhonemes = null
-    let words = text.trim().split(/\s+/)
+    let words = text.toLowerCase().trim().split(/\s+/)
 
     words.forEach((word, index) => {
       let wordPhonemes = this.#search(word)
@@ -50,6 +50,7 @@ class Phoneme {
       if (this.options['ashToBroadA']['value']) wordPhonemes = this.#ashToBroadA(wordPhonemes)
       if (this.options['palatalize']['value']) wordPhonemes = this.#palatalize(wordPhonemes)
       if (this.options['schwaToInvertedV']['value']) wordPhonemes = this.#schwaToInvertedV(wordPhonemes)
+      if (this.options['simplify']['value']) wordPhonemes = this.#simplify(wordPhonemes)
 
       this.reduction.prevWord = prevWord
       this.reduction.prevWordWithoutDelimiter = prevWordWithoutDelimiter
@@ -62,23 +63,13 @@ class Phoneme {
       this.reduction.text = text
       wordPhonemes = this.reduction.convert()
 
-      sentencePhonemes += wordPhonemes
-      // if (wordPhonemes.length >= 2) {
-      //   sentencePhonemes += wordPhonemes[0]
-      // }
-      // else {
-      //   sentencePhonemes += wordPhonemes[0]
-      // }
-
-      sentencePhonemes += this.#restoreSymbol(word)
+      let wordPhonemesArray = wordPhonemes.split(',').map(value => value.trim() + this.#restoreSymbol(word))
+      sentencePhonemes.push(wordPhonemesArray)
 
       prevWord = word
       prevWordPhonemes = wordPhonemes
     })
 
-    sentencePhonemes = sentencePhonemes.replace(/ˈ/g, ' ˈ').trim()
-
-    if (this.options['simplify']['value']) sentencePhonemes = this.#simplify(sentencePhonemes)
     return sentencePhonemes
   }
 
@@ -105,23 +96,23 @@ class Phoneme {
 
   // /ɫ/ → /l/
   // /ɹ/ → /r/
-  #simplify(text) {
+  #simplify(wordPhonemes) {
     this.phonemes['complex_and_simplified_with_long_vowels'].forEach(symbol => {
-      text = text.replace(new RegExp(symbol['complex'], 'g'), symbol['simplified'])
+      wordPhonemes = wordPhonemes.replace(new RegExp(symbol['complex'], 'g'), symbol['simplified'])
     })
 
     this.phonemes['complex_and_simplified'].forEach(symbol => {
-      text = text.replace(new RegExp(symbol['complex'], 'g'), symbol['simplified'])
+      wordPhonemes = wordPhonemes.replace(new RegExp(symbol['complex'], 'g'), symbol['simplified'])
     })
 
-    return text
+    return wordPhonemes
   }
 
   // /fli/ → /fliː/
   #longVowelize(wordPhonemes) {
     this.phonemes['long_vowels'].forEach(phoneme => {
       wordPhonemes = wordPhonemes.replace(
-        new RegExp(`(${this.phonemes['stresses']}[${this.phonemes['consonants'].join('')}]*${phoneme})`, 'g'),
+        new RegExp(`([${this.phonemes['stresses'].join('')}][${this.phonemes['consonants'].join('')}]*${phoneme})`, 'g'),
         '$1ː'
       )
     })
@@ -137,7 +128,7 @@ class Phoneme {
 
   #schwaToInvertedV(wordPhonemes) {
     return wordPhonemes.replace(
-      new RegExp(`(${this.phonemes['stresses']}[${this.phonemes['consonants'].join('')}]*)ə`, 'g'),
+      new RegExp(`([${this.phonemes['stresses'].join('')}][${this.phonemes['consonants'].join('')}]*)ə`, 'g'),
       '$1ʌ'
     )
   }

@@ -61,7 +61,7 @@ class Reduction {
       if (!this.nextWord) return false
       if (this.word !== this.wordWithoutDelimiter) return false
       if (this.nextWordPhonemes.search(
-        new RegExp(`^${this.phonemes['stresses']}?[${this.phonemes['vowels'].join('')}]`,
+        new RegExp(`^[${this.phonemes['stresses'].join('')}]?[${this.phonemes['vowels'].join('')}]`,
         'g')
       ) >= 0) {
         return false
