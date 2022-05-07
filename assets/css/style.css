@@ -34,11 +34,18 @@ input[type="checkbox"] {
   float: right;
 }
 
-.text-result-wrapper {
+.container {
   width: 1200px;
-  height: 300px;
   margin: 20px auto;
   box-sizing: content-box;
+}
+
+.title {
+  text-align: center;
+}
+
+.text-result-wrapper {
+  height: 300px;
   box-shadow: 2px 2px 8px 0 #c5c5c5;
   border-radius: 4px;
 }
@@ -74,5 +81,5 @@ input[type="checkbox"] {
 
 .options {
   width: 1150px;
-  margin: 30px auto;
+  margin: 30px auto 0;
 }
