@@ -44,7 +44,7 @@ function buildOptionCheckboxElements(name, desc, checked) {
 }
 
 function printPhonemes(phonemes) {
-  document.querySelector('#output').textContent = ''
+  document.querySelector('#output').textContent = '' // reset elements within output box
   document.querySelector('#output').insertAdjacentHTML(
     'afterbegin',
     buildPhonemeElements(phonemes)
@@ -55,18 +55,30 @@ function buildPhonemeElements(phonemes) {
   let result = ''
 
   phonemes.forEach(phoneme => {
-    if (phoneme[0].search(/([ˈˌ])/g) >= 0) result += ' '
+    // if a stress symbol exist at the beginning of a word
+    if (phoneme[0].search(/^[ˈˌ]/g) >= 0) {
+      result += ' '
+    }
 
+    // insert a space before a stress symbol (except at the beginning)
+    let phonemeWithSpaces = phoneme[0].replace(/([ˈˌ])/g, ' $1').trim()
+
+    // multiple pronunciations found
     if (phoneme.length >= 2) {
       // http://ithat.me/2015/09/15/css-before-after-content-line-break
       // https://stackoverflow.com/questions/16451553/css-data-attribute-new-line-character-pseudo-element-content-value
-      result += `<span data-sub-phonemes="others&#xa;${phoneme.slice(1).map(value => `/${value}/`).join('&#xa;')}">${phoneme[0]}</span>`
+      result += `<span data-sub-phonemes="others&#xa;${phoneme.slice(1).map(value => `/${value}/`).join('&#xa;')}">${phonemeWithSpaces}</span>`
+    }
+    // word not found
+    else if (phonemeWithSpaces.search(/^\[\?(.*)\?\]$/g) >= 0) {
+      let unknownWord = phonemeWithSpaces.replace(/^\[\?(.*)\?\]$/g, '$1')
+      result += `<span class="unknown"> ${unknownWord} </span>`
     }
     else {
-      result += phoneme[0]
+      result += phonemeWithSpaces
     }
 
-    if (phoneme[0].search(/([\,\.\!\?]+$)/g) >= 0) result += ' '
+    if (phonemeWithSpaces.search(/([\,\.\!\?]+$)/g) >= 0) result += ' '
   })
 
   return result

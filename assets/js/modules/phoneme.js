@@ -153,13 +153,13 @@ class Phoneme {
   }
 
   #search(word) {
-    let phonemes = this.dictionary[word.toLowerCase().replace(this.delimiterSymbolRegExp, '')]
+    let phonemes = this.dictionary[word.replace(this.delimiterSymbolRegExp, '')]
 
     if (phonemes) {
-      return phonemes.replace(/\//g, '').trim()//.split(/,+/)
+      return phonemes.replace(/\//g, '')//.trim()//.split(/,+/)
     }
     else {
-      return ' ??? '
+      return `[?${word}?]`
     }
   }
 }
