@@ -35,7 +35,7 @@ class Reduction {
     else if (Object.keys(this.reductions['all']).includes(this.wordWithoutDelimiter)) {
       return this.reductions['all'][this.wordWithoutDelimiter][0]
     }
-    // no reduction
+    // non-reduction word
     else {
       return this.wordPhonemes
     }
