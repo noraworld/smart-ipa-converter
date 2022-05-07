@@ -112,27 +112,32 @@ class Reduction {
     if (this.prevWord) this.prevWord = this.prevWord.toLowerCase().trim()
     this.word = this.word.toLowerCase().trim()
 
-    // return non-reduction phonemes if a whole text has only a single reduction word
+    // return non-reduction phonemes if:
+    //   a whole text has only a single reduction word
     if (Object.keys(this.reductions['all']).includes(this.text)) {
       return true
     }
 
-    if (
-      this.prevWord &&
-      this.word.search(this.delimiterSymbolRegExp) >= 0 &&
-      Object.keys(this.reductions['all']).includes(this.wordWithoutDelimiter)
-    ) {
-      return true
+    // return non-reduction phonemes if:
+    //   a previous word does not exist AND a present word has a delimiter
+    //   a previous word does not exist AND a next word does not exist
+    if (!this.prevWord) {
+      if (this.word.search(this.delimiterSymbolRegExp) >= 0 || !this.nextWord) {
+        if (Object.keys(this.reductions['all']).includes(this.wordWithoutDelimiter)) {
+          return true
+        }
+      }
     }
 
-    // return non-reduction phonemes if a sentence has only a single reduction word
-    if (
-      this.prevWord &&
-      this.prevWord.search(this.delimiterSymbolRegExp) >= 0 &&
-      this.word.search(this.delimiterSymbolRegExp) >= 0 &&
-      Object.keys(this.reductions['all']).includes(this.wordWithoutDelimiter)
-    ) {
-      return true
+    // return non-reduction phonemes if:
+    //   a previous word has a delimiter AND a present word also has a delimiter
+    //   a previous word has a delimiter AND a next word does not exist
+    if (this.prevWord && this.prevWord.search(this.delimiterSymbolRegExp) >= 0) {
+      if (this.word.search(this.delimiterSymbolRegExp) >= 0 || !this.nextWord) {
+        if (Object.keys(this.reductions['all']).includes(this.wordWithoutDelimiter)) {
+          return true
+        }
+      }
     }
 
     return false
