@@ -5,7 +5,11 @@ import * as Utility from './modules/utility.js'
 
 function updateOptionsFromCookie(options) {
   Object.keys(options).forEach(option => {
-    options[option]['value'] = Utility.stringToBoolean(Cookie.get(option))
+    let cookie = Cookie.get(option)
+
+    if (cookie) {
+      options[option]['value'] = Utility.stringToBoolean(cookie)
+    }
   })
 
   return options
