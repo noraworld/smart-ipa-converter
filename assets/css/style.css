@@ -18,6 +18,10 @@ code {
   padding: 1px 3px;
 }
 
+input[type="checkbox"] {
+  outline: none;
+}
+
 .clearfix {
   clear: both;
 }
