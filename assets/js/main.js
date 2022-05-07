@@ -1,5 +1,15 @@
 import Phoneme from './modules/phoneme.js'
 import * as Parameter from './modules/parameter.js'
+import * as Cookie from './modules/cookie.js'
+import * as Utility from './modules/utility.js'
+
+function updateOptionsFromCookie(options) {
+  Object.keys(options).forEach(option => {
+    options[option]['value'] = Utility.stringToBoolean(Cookie.get(option))
+  })
+
+  return options
+}
 
 function outputPlaceholder(input, output, phoneme) {
   if (!output.textContent) {
@@ -59,8 +69,9 @@ function buildOptionCheckboxElements(name, desc, checked) {
       value: true
     }
   }
-  const phoneme = new Phoneme(options)
+  options = updateOptionsFromCookie(options)
 
+  const phoneme = new Phoneme(options)
   const input = document.querySelector('#input')
   const output = document.querySelector('#output')
   const optionsElement = document.querySelector('#options')
@@ -80,11 +91,13 @@ function buildOptionCheckboxElements(name, desc, checked) {
     Parameter.set(`?text=${this.value}`)
   })
 
+  // option checkbox event handler
   document.querySelectorAll('#options div input').forEach(checkbox => {
     checkbox.addEventListener('change', function() {
       options[this.id]['value'] = this.checked
       output.textContent = phoneme.convert(input.value)
       outputPlaceholder(input, output, phoneme)
+      document.cookie = `${this.id}=${this.checked}`
     })
   })
 })()
