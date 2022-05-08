@@ -2,6 +2,7 @@ import Phoneme from './modules/phoneme.js'
 import * as Parameter from './modules/parameter.js'
 import * as Cookie from './modules/cookie.js'
 import * as Utility from './modules/utility.js'
+import Dictionary from './modules/dictionary.js'
 
 function updateOptionsFromCookie(options) {
   Object.keys(options).forEach(option => {
@@ -28,7 +29,7 @@ function outputPlaceholder(input, output, phoneme) {
 function createOptionCheckboxes(options, optionsElement) {
   Object.keys(options).forEach(option => {
     optionsElement.insertAdjacentHTML(
-      'afterbegin',
+      'beforeend',
       buildOptionCheckboxElements(option, options[option]['descriptionHTML'], options[option]['value'])
     )
   })
@@ -82,6 +83,19 @@ function buildPhonemeElements(phonemes) {
   })
 
   return result
+}
+
+function demo(demoParameters) {
+  demoParameters['counter'] = demoParameters['counter'] || 0
+  demoParameters['counter']++
+
+  demoParameters['input'].value = demoParameters['sentence'].substring(0, demoParameters['counter'])
+  printPhonemes(demoParameters['phoneme'].convert(input.value))
+  outputPlaceholder(demoParameters['input'], demoParameters['output'], demoParameters['phoneme'])
+
+  if (demoParameters['counter'] <= demoParameters['sentence'].length) {
+    setTimeout(demo.bind(null, demoParameters), 50)
+  }
 }
 
 (() => {
@@ -145,4 +159,16 @@ function buildPhonemeElements(phonemes) {
       document.cookie = `${this.id}=${this.checked}`
     })
   })
+
+  const dictionary = new Dictionary()
+  // https://www.ef.com/wwen/english-resources/english-quotes/famous/
+  const quotes = dictionary.load('assets/resources/quote.json')['quotes']
+  const demoParameters = {
+    input: input,
+    output: output,
+    phoneme: phoneme,
+    interval: 50,
+    sentence: quotes[Math.floor(Math.random() * quotes.length)]
+  }
+  if (Parameter.get('demo') && !Parameter.get('text')) demo(demoParameters)
 })()
