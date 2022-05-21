@@ -55,10 +55,15 @@ function printPhonemes(phonemes) {
 function buildPhonemeElements(phonemes) {
   let result = ''
 
-  phonemes.forEach(phoneme => {
-    // if a stress symbol exist at the beginning of a word
+  phonemes.forEach((phoneme, index) => {
+    // if a stress symbol exists at the beginning of a word (except a before word is not a hyphen)
     if (phoneme[0].search(/^[ˈˌ]/g) >= 0) {
-      result += ' '
+      if (!phonemes[index - 1]) {
+        result += ' '
+      }
+      else if (phonemes[index - 1] && phonemes[index - 1] !== '-') {
+        result += ' '
+      }
     }
 
     // insert a space before a stress symbol (except at the beginning)

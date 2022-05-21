@@ -25,9 +25,33 @@ class Phoneme {
     let prevWordPhonemes = null
     let nextWord = null
     let nextWordPhonemes = null
-    let words = text.toLowerCase().trim().split(/\s+/)
+    let _words = text.toLowerCase().trim().split(/\s+/)
+    let words = []
+
+    // ["hello-world"] => ["hello", "-", "world"]
+    _words.forEach((word) => {
+      let wordPhonemes = this.#search(word)
+
+      // word not found and containing hyphens
+      // HINT: the word "ad-hoc" exists even though it contains a hyphen
+      if (wordPhonemes.search(/^\[\?(.*)\?\]$/g) >= 0 && wordPhonemes.search(/\-/g) >= 0) {
+        word.split('-').map(value => {
+          words.push(value)
+          words.push('-')
+        })
+        words.pop()
+      }
+      else {
+        words.push(word)
+      }
+    })
 
     words.forEach((word, index) => {
+      if (word === '-') {
+        sentencePhonemes.push('-')
+        return // same as continue behavior
+      }
+
       let wordPhonemes = this.#search(word)
 
       if (words[index + 1]) {
