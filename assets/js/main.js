@@ -103,6 +103,17 @@ function demo(demoParameters) {
   }
 }
 
+function youglish(sentences) {
+  let youglish = document.querySelector('#youglish')
+
+  if (sentences.trim()) {
+    youglish.href = `https://youglish.com/pronounce/${sentences}/english/us`
+  }
+  else {
+    youglish.href = 'https://youglish.com'
+  }
+}
+
 (() => {
   'use strict'
 
@@ -145,6 +156,7 @@ function demo(demoParameters) {
   if (Parameter.get('text')) {
     input.value = Parameter.get('text')
     printPhonemes(phoneme.convert(Parameter.get('text')))
+    youglish(Parameter.get('text'))
   }
 
   outputPlaceholder(input, output, phoneme)
@@ -153,6 +165,7 @@ function demo(demoParameters) {
     printPhonemes(phoneme.convert(this.value))
     outputPlaceholder(input, output, phoneme)
     Parameter.set(`?text=${this.value}`)
+    youglish(this.value)
   })
 
   // option checkbox event handler
