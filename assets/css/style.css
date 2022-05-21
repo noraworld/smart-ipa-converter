@@ -44,6 +44,11 @@ input[type="checkbox"] {
   text-align: center;
 }
 
+.title a {
+  color: #000000;
+  text-decoration: none;
+}
+
 .text-result-wrapper {
   height: 300px;
   box-shadow: 2px 2px 8px 0 #c5c5c5;
