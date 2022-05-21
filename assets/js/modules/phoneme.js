@@ -11,7 +11,7 @@ class Phoneme {
     this.phonemes = dictionary.load('assets/resources/phoneme.json')
     this.reduction = new Reduction()
 
-    this.delimiterSymbolRegExp = new RegExp('[\,\.\!\?\"]', 'g')
+    this.delimiterSymbolRegExp = new RegExp('[\,\.\!\?\"\;]', 'g')
   }
 
   convert(text) {
