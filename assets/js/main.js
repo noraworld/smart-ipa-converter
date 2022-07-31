@@ -103,14 +103,15 @@ function demo(demoParameters) {
   }
 }
 
-function youglish(sentences) {
-  let youglish = document.querySelector('#youglish')
+function refer({ id, baseURL, path, sentences }) {
+  let refer = document.querySelector(`#${id}`)
 
   if (sentences.trim()) {
-    youglish.href = `https://youglish.com/pronounce/${sentences}/english/us`
+    console.log(refer.href)
+    refer.href = baseURL + path
   }
   else {
-    youglish.href = 'https://youglish.com'
+    refer.href = baseURL
   }
 }
 
@@ -156,7 +157,11 @@ function youglish(sentences) {
   if (Parameter.get('text')) {
     input.value = Parameter.get('text')
     printPhonemes(phoneme.convert(Parameter.get('text')))
-    youglish(Parameter.get('text'))
+    refer({ id: 'youglish', baseURL: 'https://youglish.com', path: `/pronounce/${Parameter.get('text')}/english/us`, sentences: Parameter.get('text') })
+    refer({ id: 'cambridge', baseURL: 'https://dictionary.cambridge.org/dictionary/english/', path: `${Parameter.get('text')}`, sentences: Parameter.get('text') })
+    refer({ id: 'google-images', baseURL: 'https://www.google.com/search?hl=en&tbm=isch', path: `&q=${Parameter.get('text')}`, sentences: Parameter.get('text') })
+    refer({ id: 'longman', baseURL: 'https://www.ldoceonline.com/dictionary', path: `/${Parameter.get('text')}`, sentences: Parameter.get('text') })
+    refer({ id: 'twitter-search', baseURL: 'https://twitter.com/search?f=live', path: `&q=${Parameter.get('text')}`, sentences: Parameter.get('text') })
   }
 
   outputPlaceholder(input, output, phoneme)
@@ -165,7 +170,11 @@ function youglish(sentences) {
     printPhonemes(phoneme.convert(this.value))
     outputPlaceholder(input, output, phoneme)
     Parameter.set(`?text=${this.value}`)
-    youglish(this.value)
+    refer({ id: 'youglish', baseURL: 'https://youglish.com', path: `/pronounce/${this.value}/english/us`, sentences: this.value })
+    refer({ id: 'cambridge', baseURL: 'https://dictionary.cambridge.org/dictionary/english/', path: `${this.value}`, sentences: this.value })
+    refer({ id: 'google-images', baseURL: 'https://www.google.com/search?hl=en&tbm=isch', path: `&q=${this.value}`, sentences: this.value })
+    refer({ id: 'longman', baseURL: 'https://www.ldoceonline.com/dictionary', path: `/${this.value}`, sentences: this.value })
+    refer({ id: 'twitter-search', baseURL: 'https://twitter.com/search?f=live', path: `&q=${this.value}`, sentences: this.value })
   })
 
   // option checkbox event handler
